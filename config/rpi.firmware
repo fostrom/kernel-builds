@@ -1,0 +1,11 @@
+# Firmware for rpi
+
+# Left out: the Pi's own radios, Intel Bluetooth
+!brcm/brcmfmac4343*-sdio*
+!brcm/brcmfmac43455-sdio*
+!brcm/brcmfmac43456-sdio*
+!brcm/BCM4343*
+!brcm/BCM4345*
+!cypress/cyfmac4343*-sdio*
+!cypress/cyfmac43455-sdio*
+!intel/ibt-*

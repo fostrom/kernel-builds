@@ -1,0 +1,8 @@
+# Drivers for rpi
+
+# Left out: PCIe radio cards
+-^IWL
+-^IPW2[12]00$
+-^ATH11K(_|$)
+-^ATH12K(_|$)
+-^BT_INTEL_PCIE$

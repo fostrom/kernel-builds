@@ -1,0 +1,36 @@
+# Firmware for every target
+
+# Bluetooth
+intel/ibt-*               btintel
+rtl_bt/*                  btrtl
+mediatek/BT_RAM_CODE_*    btmtk
+mediatek/*/BT_RAM_CODE_*  btmtk
+qca/**                    btusb
+qca/**                    btqca
+brcm/*.hcd                btbcm
+ar3k/*                    ath3k
+nxp/*uart*                btnxpuart
+
+# Wifi
+iwlwifi-*.pnvm            iwlwifi
+intel/iwlwifi/*.pnvm      iwlwifi
+ath6k/**                  ath6kl_core
+ath10k/**                 ath10k_core
+ath11k/**                 ath11k
+ath12k/**                 ath12k
+ti-connectivity/**        wlcore
+mrvl/*                    mwifiex
+wfx/*                     wfx
+iwlwifi-so-a0-gf4-a0-100.ucode  iwlwifi
+iwlwifi-bz-b0-fm-c0-c99.ucode   iwlwifi
+iwlwifi-bz-b0-gf-a0-100.ucode   iwlwifi
+iwlwifi-bz-b0-hr-b0-100.ucode   iwlwifi
+iwlwifi-sc-a0-wh-b0-c99.ucode   iwlwifi
+
+# Left out: CPU microcode, SoCs, switch ASICs, SmartNICs
+!amd-ucode/**
+!qcom/**
+!mellanox/**
+!netronome/**
+!mrvl/prestera/**
+!liquidio/**

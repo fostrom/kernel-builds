@@ -1,0 +1,31 @@
+# Drivers for arm64
+
+# Storage
+drivers/ata
+drivers/scsi
+drivers/message/fusion
+drivers/mmc/host
++^SCSI_LOWLEVEL$
++^MEGARAID_NEWGEN$
++^ATA_(SFF|BMDMA)$
+
+# Buses: USB, Thunderbolt, I2C
+drivers/usb/host
+drivers/thunderbolt
+drivers/i2c/busses
+
+# TPM, watchdog, sensors
+drivers/char/tpm
+drivers/watchdog
+drivers/hwmon
+
+# Input
+drivers/input/keyboard
+
+# Audio
+sound/pci
++^SND_PCI$
++^SND_HDA_(HWDEP|INPUT_BEEP|PATCH_LOADER|RECONFIG)$
+
+# Virtualization: VMware
+drivers/net/vmxnet3

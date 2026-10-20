@@ -1,0 +1,82 @@
+name: release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  draft:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: confirm-tag
+        run: test "$GITHUB_REF_NAME" = "v$(cat VERSION)"
+
+      - name: create-draft
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if draft=$(gh release view "$GITHUB_REF_NAME" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2> /dev/null); then
+            test "$draft" = true || { echo "$GITHUB_REF_NAME is already published"; exit 1; }
+          else
+            gh release create \
+              "$GITHUB_REF_NAME" \
+              --repo "$GITHUB_REPOSITORY" \
+              --draft \
+              --verify-tag \
+              --title "$GITHUB_REF_NAME" \
+              --notes "Kernel for Fostrom OS built from commit $GITHUB_SHA, with the kernel sources it was built from."
+          fi
+
+  sources:
+    needs: draft
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: build
+        run: docker buildx bake sources
+
+      - name: upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" .release/linux-* --repo "$GITHUB_REPOSITORY" --clobber
+
+  build:
+    needs: draft
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [amd64, arm64, rpi]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: clean-disk
+        run: |
+          sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache
+          df -h /
+
+      - name: build
+        run: |
+          VERSION=$(cat VERSION) COMMIT=$GITHUB_SHA \
+          SOURCE_DATE_EPOCH=$(git log -1 --format=%ct) \
+            docker buildx bake ${{ matrix.target }}
+
+      - uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: .release/kernel-*
+
+      - name: upload
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "$GITHUB_REF_NAME" .release/kernel-* --repo "$GITHUB_REPOSITORY" --clobber

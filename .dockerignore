@@ -1,0 +1,5 @@
+.git
+.github
+.release/
+*.md
+justfile

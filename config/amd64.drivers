@@ -1,0 +1,39 @@
+# Drivers for amd64
+
+# Storage
+drivers/ata
+drivers/scsi
+drivers/message/fusion
+drivers/mmc/host
++^SCSI_LOWLEVEL$
++^MEGARAID_NEWGEN$
++^ATA_(SFF|BMDMA)$
+
+# Platform and buses: USB, Thunderbolt, I2C, SPI, GPIO, serial
+drivers/platform/x86
+drivers/usb/host
+drivers/thunderbolt
+drivers/i2c/busses
+drivers/spi
+drivers/gpio
+drivers/pinctrl/intel
+drivers/tty/serial/8250
++^X86_PLATFORM_DEVICES$
+
+# TPM, watchdog, sensors
+drivers/char/tpm
+drivers/watchdog
+drivers/hwmon
+
+# Input
+drivers/input/keyboard
+
+# Audio
+sound/pci
++^SND_PCI$
++^SND_HDA_(HWDEP|INPUT_BEEP|PATCH_LOADER|RECONFIG)$
+
+# Virtualization: Hyper-V, VMware
+drivers/hv
+drivers/net/hyperv
+drivers/net/vmxnet3

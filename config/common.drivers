@@ -1,0 +1,56 @@
+# Drivers for every target
+
+# Wifi
+drivers/net/wireless
+net/wireless
+net/mac80211
+net/rfkill
+drivers/staging/rtl8723bs
++^WLAN_VENDOR_
++^BRCMFMAC_(SDIO|USB|PCIE)$
++^MAC80211_(MESH|LEDS)$
++^RTL8XXXU_UNTESTED$
+
+# Bluetooth
+drivers/bluetooth
+net/bluetooth
++^BT_HCIBTUSB_(BCM|MTK|RTL)$
++^BT_HCIUART_(H4|BCSP|ATH3K|LL|3WIRE|INTEL|BCM|RTL|QCA|AG6XX|MRVL)$
++^BT_(RFCOMM_TTY|BNEP_MC_FILTER|BNEP_PROTO_FILTER|LEDS)$
+
+# Networking: wired, cellular, CAN
+drivers/net/ethernet
+drivers/net/phy
+drivers/net/usb
+drivers/net/wwan
+drivers/net/can
++^NET_VENDOR_
+
+# USB devices
+drivers/usb/serial
+drivers/usb/class
+drivers/usb/storage
++^USB_SERIAL_GENERIC$
+
+# HID and input
+drivers/hid
+drivers/input/joystick
+drivers/input/misc
+drivers/input/mouse
+drivers/input/tablet
+drivers/input/touchscreen
++^INPUT_(JOYSTICK|MISC|MOUSE|TABLET|TOUCHSCREEN)$
+
+# USB cameras and sound cards
+drivers/media/usb
+sound/usb
+
+# Storage
+drivers/nvme/host
+
+# Sensors
+drivers/iio
+
+# Left out: tests
+-(^|_)(KUNIT|SELFTEST|SELFTESTS)(_|$)
+-_TEST$
