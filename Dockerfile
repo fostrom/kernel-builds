@@ -1,7 +1,7 @@
 ARG SOURCE=linux
 
 # Build Image
-FROM debian:trixie-20260824-slim@sha256:d7e12182ce18b85b93007c1dedf31f2d29e01ccf3182cc4017c709b6259bc132 AS toolchain
+FROM debian:trixie-20261104-slim@sha256:a72b4433de1cf7d6bae0c4cee74d0547f58601a643b3375f070c51600d63b6b2 AS toolchain
 RUN sed -i -e '/^URIs:/d' -e 's|^# \(http://snapshot\.debian\.org/.*\)$|URIs: \1|' \
     /etc/apt/sources.list.d/debian.sources \
     && grep -q '^URIs: http://snapshot.debian.org/' /etc/apt/sources.list.d/debian.sources \
@@ -12,31 +12,31 @@ RUN sed -i -e '/^URIs:/d' -e 's|^# \(http://snapshot\.debian\.org/.*\)$|URIs: \1
     && rm -rf /var/lib/apt/lists/*
 
 # Build Tool
-FROM golang:1.27.2-trixie@sha256:47667934874913a449b96faa7ef4777fa285d9ec29126ee80ed61c45b7cccf0e AS tool
+FROM golang:1.27.4-trixie@sha256:f18c3d73a184fb0582828510722e723b63a93f7188d11dd223d9be6f6880e65d AS tool
 WORKDIR /tool
 COPY tool/ ./
 RUN CGO_ENABLED=0 go build -trimpath -ldflags=-buildid= -o /kernel-tool .
 
 # Sources
 FROM scratch AS linux
-ADD --checksum=sha256:fbab86c9f471c81075b280cca30bd85d790c060063a1245859b6344b07c9c44e \
-    https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.36.tar.xz /linux-6.18.36.tar.xz
+ADD --checksum=sha256:020d45510c539972e6f14c5c71566878d3b7ef56fb082b3e09134f2ebaade562 \
+    https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.64.tar.xz /linux-6.18.64.tar.xz
 
 FROM scratch AS linux-rpi
-ADD --checksum=sha256:b148a879496ed0936843b3fbad76f91d445bd2d3140175f7d737813cb642ab69 \
-    https://github.com/raspberrypi/linux/archive/refs/tags/stable_20260527.tar.gz /linux-raspberrypi-stable_20260527.tar.gz
+ADD --checksum=sha256:53a3967359cf1b68953bbfc5aef5d3c7fcf9ebf61518fbba108c6a8bfce0c079 \
+    https://github.com/raspberrypi/linux/archive/refs/tags/stable_20261103.tar.gz /linux-raspberrypi-stable_20261103.tar.gz
 
 FROM scratch AS sources
 COPY --from=linux / /
 COPY --from=linux-rpi / /
 
 FROM scratch AS firmware
-ADD --checksum=sha256:b7812ed6d59f6b09ecceddaa0be842a7e82a79cc0e46ca60478a4ebf02f1e178 \
-    https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20260410.tar.xz /linux-firmware.tar.xz
-ADD --checksum=sha256:8a27bfc081bafed8c24dd70fab0d96f098e5a0bfcd08d3da672595f225ab8993 \
-    https://cdn.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2026.05.30.tar.xz /wireless-regdb.tar.xz
-ADD --checksum=sha256:7614616d7b2988c278060486f47de716ef44c19317928cb45ac9e288fafd5bd1 \
-    https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-20260812.tar.gz /intel-microcode.tar.gz
+ADD --checksum=sha256:a10d1ab5baf2c74ba92e8c7cf313e691696c26bddfa6df00db795e48d70cd4ca \
+    https://cdn.kernel.org/pub/linux/kernel/firmware/linux-firmware-20261019.tar.xz /linux-firmware.tar.xz
+ADD --checksum=sha256:b22e0901227b820cd1c280abe681a15b773a5103a5e10dc442e94ebb34cbf58d \
+    https://cdn.kernel.org/pub/software/network/wireless-regdb/wireless-regdb-2026.09.03.tar.xz /wireless-regdb.tar.xz
+ADD --checksum=sha256:989a5cd345808babee491da69ed80ae5741697bc87743a71d0ba611f3fd6afa5 \
+    https://github.com/intel/Intel-Linux-Processor-Microcode-Data-Files/archive/microcode-20261110.tar.gz /intel-microcode.tar.gz
 ADD --checksum=sha256:c973f51a9f56c2cd8510c82e1ded5349dd321f16cdcbab3ec027b28547b4634a \
     https://github.com/RPi-Distro/firmware-nonfree/archive/9794282eb9f4a2de1f23b41a738926740e975d83.tar.gz /rpi-firmware-nonfree.tar.gz
 ADD --checksum=sha256:56bcee9bac20720ceeef983949ba4d6b8d81c2f9602613232e642de547240841 \

@@ -5,9 +5,9 @@ This repo builds the Linux Kernel for Fostrom OS.
 
 | Target  | Kernel                                    |
 |---------|-------------------------------------------|
-| `amd64` | Linux 6.18.36                             |
-| `arm64` | Linux 6.18.36                             |
-| `rpi`   | Raspberry Pi's 6.18.33, `stable_20260527` |
+| `amd64` | Linux 6.18.64                             |
+| `arm64` | Linux 6.18.64                             |
+| `rpi`   | Raspberry Pi's 6.18.60, `stable_20261103` |
 
 
 ## Building
