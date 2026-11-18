@@ -150,16 +150,8 @@ func pack(args []string) error {
 // The licence texts of each source a release carries something from, as the
 // source ships them. They go in the archive under usr/share/licenses/<source>/.
 var licenceFiles = map[string][]string{
-	"linux": {"COPYING", "LICENSES"},
-	"linux-firmware": {
-		"WHENCE",
-		"GPL-2",
-		"GPL-3",
-		"LICENSE",
-		"LICENCE.*",
-		"LICENSE.*",
-		"wfx/LICENCE.wf200",
-	},
+	"linux":                {"COPYING", "LICENSES"},
+	"linux-firmware":       {"WHENCE", "LICENSE", "LICENSES"},
 	"wireless-regdb":       {"LICENSE"},
 	"intel-microcode":      {"license"},
 	"rpi-firmware-nonfree": {"debian/copyright"},
