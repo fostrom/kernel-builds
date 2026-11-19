@@ -339,7 +339,8 @@ func (t *tree) newestBelow(name string) []string {
 		}
 		c := tail[1]
 		n, _ := strconv.Atoi(tail[2])
-		if !((c == core && n <= wanted) || (core == "c" && c == "" && n <= 101)) || !t.exists(p) {
+		matches := (c == core && n <= wanted) || (core == "c" && c == "" && n <= 101)
+		if !matches || !t.exists(p) {
 			continue
 		}
 		if bestN < 0 || c > bestC || (c == bestC && (n > bestN || (n == bestN && p > best))) {

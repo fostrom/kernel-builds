@@ -60,7 +60,9 @@ func main() {
 // parse reads a command's flags and refuses anything after them, which would
 // otherwise end parsing there and leave every later flag at its default.
 func parse(flags *flag.FlagSet, args []string) {
-	flags.Parse(args)
+	if err := flags.Parse(args); err != nil {
+		os.Exit(2)
+	}
 	if flags.NArg() > 0 {
 		fmt.Fprintf(os.Stderr, "%s: unexpected argument %q\n", flags.Name(), flags.Arg(0))
 		os.Exit(2)

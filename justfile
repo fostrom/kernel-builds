@@ -10,4 +10,4 @@ _default:
 
 # Build every target or [amd64, arm64, rpi] individually, into .release/
 build *targets:
-    docker buildx bake {{targets}}
+    docker buildx bake {{ targets }}
